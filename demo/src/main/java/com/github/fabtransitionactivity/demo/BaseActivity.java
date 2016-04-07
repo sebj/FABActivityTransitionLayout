@@ -8,8 +8,8 @@ import android.support.v7.widget.Toolbar;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    protected void setUpToolbarWithTitle(String title, boolean hasBackButton){
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+    void setUpToolbarWithTitle(String title, boolean hasBackButton){
+        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolBar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
@@ -18,11 +18,11 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected void enterFromBottomAnimation(){
+    void enterFromBottomAnimation(){
         overridePendingTransition(R.anim.activity_open_translate_from_bottom, R.anim.activity_no_animation);
     }
 
-    protected void exitToBottomAnimation(){
+    void exitToBottomAnimation(){
         overridePendingTransition(R.anim.activity_no_animation, R.anim.activity_close_translate_to_bottom);
     }
 }

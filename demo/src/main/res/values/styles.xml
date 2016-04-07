@@ -10,12 +10,9 @@
         <!-- The style for the widgets on the ActionBar. -->
         <item name="actionBarWidgetTheme">@style/WidgetStyle</item>
     </style>
-    <style name="ToolBarStyle" parent="">
+
+    <style name="ToolBarStyle" parent="ThemeOverlay.AppCompat.Dark">
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
-    </style>
-    <style name="ToolbarTitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">

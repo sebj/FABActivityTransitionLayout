@@ -2,10 +2,12 @@ package com.github.fabtransitionactivity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Outline;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -17,13 +19,17 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import io.codetail.animation.SupportAnimator;
 
-public class SheetLayout extends FrameLayout {
+public class FABActivityTransitionLayout extends FrameLayout {
 
     private static final int DEFAULT_ANIMATION_DURATION = 350;
     private static final int DEFAULT_FAB_SIZE = 56;
@@ -32,31 +38,31 @@ public class SheetLayout extends FrameLayout {
     private static final int FAB_EXPAND = 1;
 
     @IntDef({FAB_CIRCLE, FAB_EXPAND})
+    @Retention(RetentionPolicy.SOURCE)
     private @interface Fab {
     }
 
     private LinearLayout mFabExpandLayout;
     private ImageView mFab;
 
-    int mFabType = FAB_CIRCLE;
-    boolean mAnimatingFab = false;
+    private int mFabType = FAB_CIRCLE;
     private int animationDuration;
     private int mFabSize;
 
-    OnFabAnimationEndListener mListener;
+    private OnFabAnimationEndListener mListener;
 
-    public SheetLayout(Context context) {
+    public FABActivityTransitionLayout(Context context) {
         super(context);
         init();
     }
 
-    public SheetLayout(Context context, AttributeSet attrs) {
+    public FABActivityTransitionLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
         loadAttributes(context, attrs);
     }
 
-    public SheetLayout(Context context, AttributeSet attrs, int defStyle) {
+    public FABActivityTransitionLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
         loadAttributes(context, attrs);
@@ -163,7 +169,6 @@ public class SheetLayout extends FrameLayout {
 
     public void expandFab() {
         mFabType = FAB_EXPAND;
-        mAnimatingFab = true;
 
         // Center point on the screen of the FAB.
         int x = (int) (centerX(mFab));
@@ -188,13 +193,17 @@ public class SheetLayout extends FrameLayout {
         }
     }
 
+    //Convenience method
     public void contractFab() {
+        contractFab(true);
+    }
+
+    public void contractFab(boolean animate) {
         if (!isFabExpanded()) {
             return;
         }
 
         mFabType = FAB_CIRCLE;
-        mAnimatingFab = true;
 
         mFab.setAlpha(0f);
         mFab.setVisibility(View.VISIBLE);
@@ -204,13 +213,28 @@ public class SheetLayout extends FrameLayout {
         int y = (int) (centerY(mFab));
 
         // Start and end radius of the toolbar contract animation.
-        float endRadius = getFabSizePx() / 2;
+        final float endRadius = getFabSizePx() / 2;
         float startRadius = calculateStartRadius(x, y);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            contractPreLollipop(x, y, startRadius, endRadius);
+        if (!animate && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            setOutlineProvider(new ViewOutlineProvider() {
+                @Override
+                @SuppressLint("NewApi")
+                public void getOutline(View view, Outline outline) {
+                    outline = new Outline();
+                    outline.setOval(0, 0, (int)endRadius, (int)endRadius);
+                }
+            });
+
+            contractAnimationEnd();
+
         } else {
-            contractLollipop(x, y, startRadius, endRadius);
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                contractPreLollipop(x, y, startRadius, endRadius);
+            } else {
+                contractLollipop(x, y, startRadius, endRadius);
+            }
         }
     }
 
@@ -256,7 +280,6 @@ public class SheetLayout extends FrameLayout {
 
             @Override
             public void onAnimationEnd() {
-                //mFab.setAlpha(1f);
                 expandAnimationEnd();
 
             }
@@ -325,18 +348,19 @@ public class SheetLayout extends FrameLayout {
     }
 
     private void expandAnimationEnd(){
-        mAnimatingFab = false;
         if (mListener != null)
-            mListener.onFabAnimationEnd();
+            mListener.onFabExpandAnimationEnd();
     }
 
     private void contractAnimationEnd(){
         mFab.setAlpha(1f);
         mFabExpandLayout.setAlpha(0f);
 
-        mAnimatingFab = false;
         mFabExpandLayout.setVisibility(View.INVISIBLE);
         mFabExpandLayout.setAlpha(1f);
+
+        if (mListener != null)
+            mListener.onFabContractAnimationEnd();
     }
 
     private float calculateStartRadius(int x, int y){
@@ -359,7 +383,8 @@ public class SheetLayout extends FrameLayout {
     }
 
     public interface OnFabAnimationEndListener {
-        void onFabAnimationEnd();
+        void onFabExpandAnimationEnd();
+        void onFabContractAnimationEnd();
     }
 
     public void setFabAnimationEndListener(OnFabAnimationEndListener eventListener) {

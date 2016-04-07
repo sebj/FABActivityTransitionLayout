@@ -5,10 +5,10 @@ package com.github.fabtransitionactivity.demo.model;
  */
 public class Mail {
 
-    private int circleColor;
-    private String titleEmail;
-    private String messageEmail;
-    private String dateEmail;
+    private final int circleColor;
+    private final String titleEmail;
+    private final String messageEmail;
+    private final String dateEmail;
 
     public Mail(int circleColor, String titleEmail, String messageEmail, String dateEmail) {
         this.circleColor = circleColor;

@@ -17,17 +17,20 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.github.fabtransitionactivity.SheetLayout;
+import com.github.fabtransitionactivity.FABActivityTransitionLayout;
 import com.github.fabtransitionactivity.demo.model.Mail;
 
 
-public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnimationEndListener {
+public class MainActivity extends BaseActivity implements FABActivityTransitionLayout.OnFabAnimationEndListener {
 
-    @Bind(R.id.bottom_sheet) SheetLayout mSheetLayout;
-    @Bind(R.id.fab) FloatingActionButton mFab;
-    @Bind(R.id.list_mails) ListView listMails;
+    @Bind(R.id.bottom_sheet)
+    FABActivityTransitionLayout mFabActivityTransitionLayout;
+    @Bind(R.id.fab)
+    FloatingActionButton mFab;
+    @Bind(R.id.list_mails)
+    ListView listMails;
 
-    ArrayList<Mail> mailList = new ArrayList<>();
+    private ArrayList<Mail> mailList = new ArrayList<>();
 
     private static final int REQUEST_CODE = 1;
 
@@ -38,8 +41,8 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
         ButterKnife.bind(this);
         setUpToolbarWithTitle(getString(R.string.INBOX), false);
 
-        mSheetLayout.setFab(mFab);
-        mSheetLayout.setFabAnimationEndListener(this);
+        mFabActivityTransitionLayout.setFab(mFab);
+        mFabActivityTransitionLayout.setFabAnimationEndListener(this);
 
         fillMailList();
         listMails.setAdapter(new MailAdapter());
@@ -47,27 +50,30 @@ public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnima
 
     @OnClick(R.id.fab)
     void onFabClick() {
-        mSheetLayout.expandFab();
+        mFabActivityTransitionLayout.expandFab();
     }
 
     @Override
-    public void onFabAnimationEnd() {
+    public void onFabExpandAnimationEnd() {
         Intent intent = new Intent(this, AfterFabAnimationActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
     }
+
+    @Override
+    public void onFabContractAnimationEnd() { }
 
 
    @Override
    public void onActivityResult(int requestCode, int resultCode, Intent data) {
        super.onActivityResult(requestCode, resultCode, data);
        if(requestCode == REQUEST_CODE){
-           mSheetLayout.contractFab();
+           mFabActivityTransitionLayout.contractFab();
        }
    }
 
 
     private void fillMailList(){
-        String message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
+        final String message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua";
 
         mailList.add(new Mail(1, "Abbrey Christensen", message, "Nov 5"));
         mailList.add(new Mail(2, "Alex Nelson", message, "Nov 5"));

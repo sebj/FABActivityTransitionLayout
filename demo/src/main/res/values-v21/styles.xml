@@ -28,7 +28,6 @@
         <item name="color">#FFFFFF</item>
     </style>
     <style name="MyApp.ActionBarTheme" parent="@style/Theme.AppCompat.NoActionBar">
-        <!-- THIS is where you can color the arrow! -->
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 </resources>

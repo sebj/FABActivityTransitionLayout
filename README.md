@@ -67,7 +67,7 @@ Add a `com.github.fabtransitionactivity.SheetLayout` after your `FloatingActionB
 * Override `onFabExpandAnimationEnd()` to open your activity or perform an action:
 ```java
     @Override
-    public void onFabAnimationEnd() {
+    public void onFabExpandAnimationEnd() {
         Intent intent = new Intent(this, AfterFabAnimationActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
     }
@@ -77,7 +77,7 @@ Add a `com.github.fabtransitionactivity.SheetLayout` after your `FloatingActionB
     @Override
    public void onActivityResult(int requestCode, int resultCode, Intent data) {
        if (requestCode == REQUEST_CODE){
-           mActivityTransitionLayout.contractFab();
+           mFabActivityTransitionLayout.contractFab();
         } else {
            super.onActivityResult(requestCode, resultCode, data);
         }

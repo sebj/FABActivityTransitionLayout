@@ -1,18 +1,21 @@
-# FabTransitionActivity
+# FABActivityTransitionLayout
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-FabTransitionActivity-green.svg?style=true)](https://android-arsenal.com/details/1/2763)
 
-It is based on [FabTransitionLayout](https://github.com/bowyer-app/FabTransitionLayout)
+**Easily transition from the tap of a `Floating Action Button` to a new activity opening with a circular reveal animation.**
+*(Based on [FabTransitionLayout](https://github.com/bowyer-app/FabTransitionLayout))*
 
 ![transitionactivity](https://github.com/coyarzun89/FabTransitionActivity/blob/master/art/fabTransitionActivity.gif)
 
-Warning: The new version 0.2.0 have minSdkVersion 15 because the [CircularReveal](https://github.com/ozodrukh/CircularReveal) project has moved from 14 to 15
+Warning: The new version `0.2.0` now has a `minSdkVersion` of `15` as the [CircularReveal](https://github.com/ozodrukh/CircularReveal) dependency has moved from `14` to `15`
 
 Usage
 ====
 ### build.gradle
 
+Add the following to your `build.gradle`
+
 ```
-//this is very important, don't forget it
+//Very important, don't forget it..
 repositories {
     mavenCentral()
 
@@ -33,45 +36,17 @@ dependencies {
 ```
 
 ### Layout XML
-```
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+
+Add a `com.github.fabtransitionactivity.SheetLayout` after your `FloatingActionButton` within the same container.
+
+```java
+<!-- Container (CoordinatorLayout, RelativeLayout etc.) -->
     
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_actionbar"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        style="@style/ToolBarStyle"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primary"
-        app:titleTextAppearance="@style/ToolbarTitle"
-        android:minHeight="56dp"
-        android:paddingLeft="36dp"
-        android:elevation="2dp" />
-        
-    <ListView
-        android:id="@+id/list_mails"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_actionbar"/>
+    <!-- Contents -->
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:src="@drawable/ic_edit_white_24dp"
-        app:borderWidth="0dp"
-        app:fabSize="normal"
-        app:rippleColor="@color/primary"/>
+    <android.support.design.widget.FloatingActionButton.. />
 
-    <com.github.fabtransitionactivity.SheetLayout
+    <com.github.fabtransitionactivity.FABActivityTransitionLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -80,50 +55,36 @@ dependencies {
         app:ft_color="@color/primary"
         android:elevation="2dp"/>
 
-</RelativeLayout>
-
+<!-- End Container -->
 ```
 
-### Set up
+### Code Steps
 
+* Call `setFab(..)` on your `FABActivityTransitionLayout`, passing the `Floating Action Button` as as parameter
+* `setFabAnimationEndListener(..)`
+* Set your `Floating Action Button` to call your `FABActivityTransitionLayout` `expandFab()`
+* Override `onFabExpandAnimationEnd()` to open your activity or perform an action:
 ```java
-public class MainActivity extends BaseActivity implements SheetLayout.OnFabAnimationEndListener {
-
-    @Bind(R.id.bottom_sheet) SheetLayout mSheetLayout;
-    @Bind(R.id.fab) FloatingActionButton mFab;
-    
-    private static final int REQUEST_CODE = 1;
-    
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-
-        mSheetLayout.setFab(mFab);
-        mSheetLayout.setFabAnimationEndListener(this);
-    }
-    
-    @OnClick(R.id.fab)
-    void onFabClick() {
-        mSheetLayout.expandFab();
-    }
-
     @Override
     public void onFabAnimationEnd() {
         Intent intent = new Intent(this, AfterFabAnimationActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
     }
-
-   @Override
+```
+* Lastly, remember to call `contractFab()` after your opened activity has ended, for example:
+```java
+    @Override
    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-       super.onActivityResult(requestCode, resultCode, data);
-       if(requestCode == REQUEST_CODE){
+       if (requestCode == REQUEST_CODE){
            mSheetLayout.contractFab();
-       }
+        } else {
+           super.onActivityResult(requestCode, resultCode, data);
+        }
    }
 ```
 
+**See the `Demo` project for an example of this.**
+
 # Credits
-This library use following libraries.
+This library uses the following libraries:
 * [CircularReveal](https://github.com/ozodrukh/CircularReveal)

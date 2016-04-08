@@ -52,12 +52,19 @@ Add a `com.github.fabtransitionactivity.SheetLayout` after your `FloatingActionB
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
-        app:ft_container_gravity="center"
-        app:ft_color="@color/primary"
-        android:elevation="2dp"/>
+        app:elevation="2dp"
+        android:color="@color/primary"
+        app:containerGravity="center"
+        app:atl_fabSize="normal"/>
 
 <!-- End Container -->
 ```
+
+**Attributes**
+* `android:color`
+* `app:containerGravity`
+* `app:animationDuration`
+* `app:atl_fabSize`
 
 ### Code Steps
 

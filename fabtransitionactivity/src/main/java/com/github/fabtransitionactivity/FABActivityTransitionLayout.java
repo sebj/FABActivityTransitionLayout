@@ -82,17 +82,17 @@ public class FABActivityTransitionLayout extends FrameLayout {
 
         TypedArray a = getContext().getTheme().obtainStyledAttributes(
                 attrs,
-                R.styleable.FooterLayout,
+                R.styleable.ActivityTransitionLayout,
                 0, 0);
 
         int containerGravity;
         try {
-            setColor(a.getColor(R.styleable.FooterLayout_ft_color,
+            setColor(a.getColor(R.styleable.ActivityTransitionLayout_android_color,
                     outValue.data));
-            animationDuration = a.getInteger(R.styleable.FooterLayout_ft_anim_duration,
+            animationDuration = a.getInteger(R.styleable.ActivityTransitionLayout_animationDuration,
                     DEFAULT_ANIMATION_DURATION);
-            containerGravity = a.getInteger(R.styleable.FooterLayout_ft_container_gravity, 1);
-            mFabSize = a.getInteger(R.styleable.FooterLayout_ft_fab_type, DEFAULT_FAB_SIZE);
+            containerGravity = a.getInteger(R.styleable.ActivityTransitionLayout_containerGravity, 1);
+            mFabSize = a.getInteger(R.styleable.ActivityTransitionLayout_atl_fabSize, DEFAULT_FAB_SIZE);
         } finally {
             a.recycle();
         }

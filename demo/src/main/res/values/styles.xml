@@ -20,7 +20,7 @@
         <item name="color">#FFFFFF</item>
     </style>
 
-    <style name="WidgetStyle" parent="style/ThemeOverlay.AppCompat.Light">
+    <style name="WidgetStyle" parent="ThemeOverlay.AppCompat.Light">
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 </resources>

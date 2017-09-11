@@ -11,7 +11,6 @@ import android.graphics.Outline;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -27,8 +26,7 @@ import android.widget.LinearLayout;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import io.codetail.animation.SupportAnimator;
-
+@SuppressWarnings("ALL")
 public class FABActivityTransitionLayout extends FrameLayout {
 
     private static final int DEFAULT_ANIMATION_DURATION = 350;
@@ -70,7 +68,7 @@ public class FABActivityTransitionLayout extends FrameLayout {
 
     private void init() {
         inflate(getContext(), R.layout.bottom_sheet_layout, this);
-        mFabExpandLayout = ((LinearLayout) findViewById(R.id.ft_container));
+        mFabExpandLayout = (LinearLayout) findViewById(R.id.ft_container);
     }
 
     private void loadAttributes(Context context, AttributeSet attrs) {
@@ -268,31 +266,27 @@ public class FABActivityTransitionLayout extends FrameLayout {
 
     private void expandPreLollipop(int x, int y, float startRadius, float endRadius) {
 
-        SupportAnimator toolbarExpandAnim = io.codetail.animation.ViewAnimationUtils
+        Animator toolbarExpandAnim = io.codetail.animation.ViewAnimationUtils
                 .createCircularReveal(
                         mFabExpandLayout, x, y, startRadius, endRadius);
         toolbarExpandAnim.setDuration(animationDuration);
-        toolbarExpandAnim.addListener(new SupportAnimator.AnimatorListener() {
+        toolbarExpandAnim.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart() {
+            public void onAnimationStart(Animator animator) {
                 mFabExpandLayout.setAlpha(1f);
             }
 
             @Override
-            public void onAnimationEnd() {
+            public void onAnimationEnd(Animator animator) {
                 expandAnimationEnd();
 
             }
 
             @Override
-            public void onAnimationCancel() {
-
-            }
+            public void onAnimationCancel(Animator animator) {}
 
             @Override
-            public void onAnimationRepeat() {
-
-            }
+            public void onAnimationRepeat(Animator animator) {}
         });
 
         toolbarExpandAnim.start();
@@ -318,30 +312,24 @@ public class FABActivityTransitionLayout extends FrameLayout {
 
     private void contractPreLollipop(int x, int y, float startRadius, float endRadius) {
 
-        final SupportAnimator toolbarContractAnim = io.codetail.animation.ViewAnimationUtils
+        final Animator toolbarContractAnim = io.codetail.animation.ViewAnimationUtils
                 .createCircularReveal(mFabExpandLayout, x, y, startRadius, endRadius);
         toolbarContractAnim.setDuration(animationDuration);
 
-        toolbarContractAnim.addListener(new SupportAnimator.AnimatorListener() {
+        toolbarContractAnim.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationStart() {
-
-            }
+            public void onAnimationStart(Animator animator) {}
 
             @Override
-            public void onAnimationEnd() {
+            public void onAnimationEnd(Animator animator) {
                 contractAnimationEnd();
             }
 
             @Override
-            public void onAnimationCancel() {
-
-            }
+            public void onAnimationCancel(Animator animator) {}
 
             @Override
-            public void onAnimationRepeat() {
-
-            }
+            public void onAnimationRepeat(Animator animator) {}
         });
 
         toolbarContractAnim.start();
@@ -375,11 +363,11 @@ public class FABActivityTransitionLayout extends FrameLayout {
     }
 
     private float centerX(View view) {
-        return ViewCompat.getX(view) + view.getWidth() / 2f;
+        return view.getX() + view.getWidth() / 2f;
     }
 
     private float centerY(View view) {
-        return ViewCompat.getY(view) + view.getHeight() / 2f;
+        return view.getY() + view.getHeight() / 2f;
     }
 
     public interface OnFabAnimationEndListener {

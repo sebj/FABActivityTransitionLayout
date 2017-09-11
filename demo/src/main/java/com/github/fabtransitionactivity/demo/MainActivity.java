@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.github.fabtransitionactivity.FABActivityTransitionLayout;
@@ -23,14 +23,16 @@ import com.github.fabtransitionactivity.demo.model.Mail;
 
 public class MainActivity extends BaseActivity implements FABActivityTransitionLayout.OnFabAnimationEndListener {
 
-    @Bind(R.id.bottom_sheet)
+    @BindView(R.id.bottom_sheet)
     FABActivityTransitionLayout mFabActivityTransitionLayout;
-    @Bind(R.id.fab)
+
+    @BindView(R.id.fab)
     FloatingActionButton mFab;
-    @Bind(R.id.list_mails)
+
+    @BindView(R.id.list_mails)
     ListView listMails;
 
-    private ArrayList<Mail> mailList = new ArrayList<>();
+    private final ArrayList<Mail> mailList = new ArrayList<>();
 
     private static final int REQUEST_CODE = 1;
 
@@ -124,13 +126,13 @@ public class MainActivity extends BaseActivity implements FABActivityTransitionL
     }
 
     static class ViewHolder {
-        @Bind(R.id.image_email) ImageView imageEmail;
-        @Bind(R.id.text_label_email)  TextView textLabelEmail;
-        @Bind(R.id.text_title_email)  TextView textTitleEmail;
-        @Bind(R.id.text_message_email)  TextView textMessageEmail;
-        @Bind(R.id.text_date_email)  TextView textDateEmail;
+        @BindView(R.id.image_email) ImageView imageEmail;
+        @BindView(R.id.text_label_email)  TextView textLabelEmail;
+        @BindView(R.id.text_title_email)  TextView textTitleEmail;
+        @BindView(R.id.text_message_email)  TextView textMessageEmail;
+        @BindView(R.id.text_date_email)  TextView textDateEmail;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }

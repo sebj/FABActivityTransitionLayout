@@ -9,7 +9,7 @@ import android.support.v7.widget.Toolbar;
 public class BaseActivity extends AppCompatActivity {
 
     void setUpToolbarWithTitle(String title, boolean hasBackButton){
-        Toolbar toolBar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolBar = findViewById(R.id.toolbar);
         setSupportActionBar(toolBar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);

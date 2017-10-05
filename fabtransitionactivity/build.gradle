@@ -13,14 +13,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion COMPILE_SDK_VERSION as int
-    buildToolsVersion '26.0.1'
+    compileSdkVersion 26
 
     defaultConfig {
-        minSdkVersion MIN_SDK_VERSION
-        targetSdkVersion TARGET_SDK_VERSION as int
-        versionCode VERSION_CODE as int
-        versionName VERSION_NAME
+        minSdkVersion 19
+        targetSdkVersion 26
+        versionCode 3
+        versionName "0.2.1"
     }
     buildTypes {
         release {
@@ -31,8 +30,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:26.0.2'
-    compile ('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile ('com.github.ozodrukh.CircularReveal:circualreveal:2.1.0@aar') {
         transitive = true
     }
 }
